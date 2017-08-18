@@ -21,44 +21,49 @@ namespace ConverteBase
         private void btnConverter_Click(object sender, EventArgs e)
         {
             String valor = valorInserido.Text;
-            //int tamanho = valor.Length;
-            if (opcDecimal.Checked)
+            
+            if (valor == String.Empty)
             {
-                double d = Convert.ToDouble(valor);
-                String db = DecimalParaBinario(d);
-                String dO = DecimalParaOctal(d);
-                String dh = DecimalParaHexadecimal(d);
-                MessageBox.Show("Valor Inserido: "+valor+"\nBinário: "+db+"\nOctal: "+dO+"\nHexadecimal: "+dh);
-            }else if(opcBinario.Checked){
-                double bd = BinarioParaDecimal(valor);
-                String dO = DecimalParaOctal(bd);
-                String dh = DecimalParaHexadecimal(bd);
-                MessageBox.Show("Valor Inserido: " + valor + "\nDecimal: " + bd + "\nOctal: " + dO + "\nHexadecimal: " + dh);
-            }else if(opcOctal.Checked){
-                double oD = OctalParaDecimal(valor);
-                String dh = DecimalParaHexadecimal(oD);
-                String db = DecimalParaBinario(oD);
-                MessageBox.Show("Valor Inserido: " + valor + "\nDecimal: " + oD + "\nBinário: " + db + "\nHexadecimal: " + dh);
-            }else if(opcHexa.Checked){
-                double hd = HexadecimalParaDecimal(valor);
-                String dO = DecimalParaOctal(hd);
-                String db = DecimalParaBinario(hd);
-                MessageBox.Show("Valor Inserido: " + valor + "\nDecimal: " + hd + "\nBinario: " + db + "\nOctal: " + dO);
+                MessageBox.Show("Nenhum valor foi inserido!");
             }
             else
             {
-                MessageBox.Show("Nenhum tipo de base foi selecionado!");
+                if (opcDecimal.Checked)
+                {
+                    double d = Convert.ToDouble(valor);
+                    String db = DecimalParaBinario(d);
+                    String dO = DecimalParaOctal(d);
+                    String dh = DecimalParaHexadecimal(d);
+                    MessageBox.Show("Decimal Inserido: " + valor + "\n\nBinário: " + db + "\nOctal: " + dO + "\nHexadecimal: " + dh);
+                }
+                else if (opcBinario.Checked)
+                {
+                    double bd = BinarioParaDecimal(valor);
+                    String dO = DecimalParaOctal(bd);
+                    String dh = DecimalParaHexadecimal(bd);
+                    MessageBox.Show("Binario Inserido: " + valor + "\n\nDecimal: " + bd + "\nOctal: " + dO + "\nHexadecimal: " + dh);
+                }
+                else if (opcOctal.Checked)
+                {
+                    double oD = OctalParaDecimal(valor);
+                    String dh = DecimalParaHexadecimal(oD);
+                    String db = DecimalParaBinario(oD);
+                    MessageBox.Show("Octal Inserido: " + valor + "\n\nDecimal: " + oD + "\nBinário: " + db + "\nHexadecimal: " + dh);
+                }
+                else if (opcHexa.Checked)
+                {
+                    double hd = HexadecimalParaDecimal(valor);
+                    String dO = DecimalParaOctal(hd);
+                    String db = DecimalParaBinario(hd);
+                    String vUp = valor.ToUpper();
+                    MessageBox.Show("Hexadecimal Inserido: " + vUp + "\n\nDecimal: " + hd + "\nBinario: " + db + "\nOctal: " + dO);
+                }
+                else
+                {
+                    MessageBox.Show("Nenhum tipo de base foi selecionado!");
 
+                }
             }
-        }
-
-        private string inverterString(string Word)
-        {
-            char[] arrChar = Word.ToCharArray();
-            Array.Reverse(arrChar);
-            string invertida = new String(arrChar);
-
-            return invertida;
         }
 
         public String DecimalParaBinario(double d)
@@ -70,7 +75,14 @@ namespace ConverteBase
             {
                 r = d % 2;
                 d = (int)d / 2;
-                binarios.Add(Convert.ToInt32(r));
+                if (r == 1)
+                {
+                    binarios.Add(1);
+                }
+                else
+                {
+                    binarios.Add(0);
+                }
             }
             binarios.Reverse();
 
@@ -80,7 +92,7 @@ namespace ConverteBase
             {
                 builder.Append(n);
             }
-            string result = builder.ToString();
+            String result = builder.ToString();
 
             return result;
         }
@@ -124,6 +136,7 @@ namespace ConverteBase
                 d = (int)d / 16;
                 hexa.Add((int)r);
             } while (d >= 16);
+            hexa.Add((int)Math.Floor((double)d));
 
             List<string> listaHexa = new List<string>();
 
@@ -192,7 +205,7 @@ namespace ConverteBase
         {
             int tamanho = s.Count();
             s = s.ToUpper();
-            s = inverterString(s);
+            s = InverterString(s);
             double d = 0;
 
             for (int i = 0; i < tamanho; i++)
@@ -234,7 +247,7 @@ namespace ConverteBase
         public double OctalParaDecimal(String o)
         {
             double d = 0;
-            o = inverterString(o);
+            o = InverterString(o);
 
             for (int i = 0; i < o.Length; i++)
             {
@@ -251,7 +264,7 @@ namespace ConverteBase
             decimal dividendo = Convert.ToDecimal(binario);
             double d = 0;
        
-            string binarioInvertido = inverterString(binario);
+            string binarioInvertido = InverterString(binario);
 
             for (int i = 0; i < binarioInvertido.Length; i++)
             {
